@@ -1,0 +1,78 @@
+﻿@model IEnumerable<BlueRibbonsReview.Models.Referral>
+
+@{
+    ViewBag.Title = "Referrals";
+    ViewBag.Tagline = "";
+}
+
+@*<h2>Index</h2>*@
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Referral Name", "Index", new { sortOrder = ViewBag.ReferralNameSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("Email of Referral", "Index", new { sortOrder = ViewBag.ReferralEmailSortParm })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Message)
+        </th>
+        <th>
+            @Html.ActionLink("User Name", "Index", new { sortOrder = ViewBag.UserNameSortParm })
+        </th>
+        <th>
+            @Html.ActionLink("User Email", "Index", new { sortOrder = ViewBag.UserEmailSortParm })
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReferralName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReferralEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+            <td>
+                @{
+                    if (item.ApplicationUser == null)
+                    {
+                        @Html.Raw("(Empty)");
+                    }
+                    else
+                    {
+                        string fullName = item.ApplicationUser.FirstName + " " + item.ApplicationUser.LastName;
+                        @Html.Raw(fullName)
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (item.ApplicationUser == null)
+                    {
+                        @Html.Raw("(Empty)");
+                    }
+                    else
+                    {
+                        string userEmail = item.ApplicationUser.Email;
+                        @Html.Raw(userEmail)
+                    }
+                }
+            </td>
+
+            </td>
+            <td>
+                @Html.ActionLink(" ", "Edit", new { id = item.ReferralID }, new { @class = "fa fa-pencil-square-o fa-lg" }) |
+                @Html.ActionLink(" ", "Details", new { id = item.ReferralID }, new { @class = "fa fa-info fa-lg" }) |
+                @Html.ActionLink(" ", "Delete", new { id = item.ReferralID }, new { @class = "far fa-trash-alt fa-lg" })
+            </td>
+        </tr>
+    }
+</table>
+
+@Html.ActionLink("Export Emails to CSV", "ExportEmailListToCSV")
