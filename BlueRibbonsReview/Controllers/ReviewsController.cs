@@ -36,6 +36,7 @@ namespace BlueRibbonsReview.Controllers
             ViewBag.RatingSortParm = "rating";
             ViewBag.RatingDescSortParm = "rating_desc";
 
+            // NOTE: Sort order is not my work ... added by another programmer
             switch (sortOrder)
             {  //sort reviews based on "Sort by" dropdown selection
                 case "name":
@@ -59,6 +60,7 @@ namespace BlueRibbonsReview.Controllers
                                            select campaigns;
                     break;
             }
+            //
 
             // Creating new variable of List<Campaign>, containing only unique instances of campagins with reviews.
             var uniqueCampaignsWithReviews = new HashSet<Campaign>(campaignsWithReviews).ToList();
