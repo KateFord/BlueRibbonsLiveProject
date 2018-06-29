@@ -10,16 +10,14 @@ namespace BlueRibbonsReview.Models
     {
         public int ReferralID { get; set; }
 
-        [Display(Name ="Name of Referral")]
+        [Display(Name = "Name of Referral")]
         public string ReferralName { get; set; }
 
-        [Display(Name ="Email of Referral")]
+        [Display(Name = "Email of Referral")]
         public string ReferralEmail { get; set; }
 
-        [Display(Name ="Personal Message")]
+        [Display(Name = "Personal Message")]
         public string Message { get; set; }
-
-        public string UserId { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
     }

@@ -20,8 +20,6 @@ namespace BlueRibbonsReview.Models
 
         public int? CampaignId { get; set; }
 
-        public string UserId { get; set; }
-        
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual Campaign Campaign { get; set; }
     }

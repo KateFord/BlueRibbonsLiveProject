@@ -27,6 +27,7 @@ namespace BlueRibbonsReview
             bundles.Add(new ScriptBundle("~/bundles/javaScript").Include(
                         "~/Scripts/common/liveCreateUpdate.js",
                         "~/Scripts/common/characterLimit.js",
+                        "~/Scripts/common/characterCount.js",
                         "~/Scripts/common/jQueryUI.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

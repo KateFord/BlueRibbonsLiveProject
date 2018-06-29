@@ -8,10 +8,10 @@
 @*<h2>Create</h2>*@
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         @*<h4>Referral</h4>*@
         @*<hr />*@
@@ -38,7 +38,7 @@
                 @Html.TextAreaFor(model => model.Message, new { htmlAttributes = new { @class = "form-control" } })
                 <br />
                 @Html.ValidationMessageFor(model => model.Message, "", new { @class = "text-danger" })
-                <a href="#" data-toggle="tooltip" title="Personal message character count"><p id="characterCount" class="text-muted " ></p></a>
+                <a href="#" data-toggle="tooltip" title="Personal message character count"><p id="characterCount" class="text-muted "></p></a>
             </div>
         </div>
 
@@ -50,5 +50,13 @@
     </div>
 }
 
-@section Scripts {  @Scripts.Render("../bundles/jQueryval")  }
+
+
+<script>
+    $( document ).ready(function() {
+        $("#Message").keyup(characterCount);
+        $("#Message").keydown(characterCount);
+        $("#Message").on('input', characterCount);
+    });
+</script>
 

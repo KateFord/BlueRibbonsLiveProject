@@ -142,18 +142,12 @@ namespace BlueRibbonsReview.Controllers
                 {
                     campaign.VendorsPurchaseURL = String.Format("https://www.amazon.com/dp/{0}", campaign.ASIN);
                     campaign.OpenCampaign = false;
-                    string userId = User.Identity.GetUserId();
-                    campaign.ApplicationUser = db.Users.Single(u => u.Id == userId);
 
-                    // var message = new MailMessage();
-                    // message.To.Add("support@bewander.com");
-                    // var currentUserName = User.Identity.GetUserName();
-                    // message.From = new MailAddress(currentUserName);
-                    // message.Subject = "A new Campaign has been created!");
-
+                    // Application User ID Change
+                    string applicationUserId = User.Identity.GetUserId();
+                    campaign.ApplicationUser = db.Users.Single(u => u.Id == applicationUserId);
                     db.Campaigns.Add(campaign);
                     db.SaveChanges();
-                    // return RedirectToAction("Sent");
 
                 }
             }
@@ -182,7 +176,7 @@ namespace BlueRibbonsReview.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Campaign campaign = db.Campaigns.Find(id); 
+            Campaign campaign = db.Campaigns.Find(id);
             if (campaign == null)
             {
                 return HttpNotFound();
@@ -267,8 +261,9 @@ namespace BlueRibbonsReview.Controllers
 
         public ActionResult AdminView(string sortOrder)
         {
-            ViewBag.OpenCampaignSortParm = String.IsNullOrEmpty(sortOrder) ? "openCampaign_desc" : "";
+            ViewBag.UserNameSortParm = sortOrder == "userName" ? "userName_desc" : "userName";
             ViewBag.SellerEmailSortParm = sortOrder == "sellerEmail" ? "sellerEmail_desc" : "sellerEmail";
+            ViewBag.OpenCampaignSortParm = String.IsNullOrEmpty(sortOrder) ? "openCampaign_desc" : "";
             ViewBag.StartDateSortParm = sortOrder == "startDate" ? "startDate_desc" : "startDate";
             ViewBag.CloseDateSortParm = sortOrder == "closeDate" ? "closeDate_desc" : "closeDate";
             ViewBag.ExpireDateSortParm = sortOrder == "expireDate" ? "expireDate_desc" : "expireDate";
@@ -278,8 +273,11 @@ namespace BlueRibbonsReview.Controllers
                             select c;
             switch (sortOrder)
             {
-                case "openCampaign_desc":
-                    campaigns = campaigns.OrderByDescending(c => c.OpenCampaign);
+                case "userName":
+                    campaigns = campaigns.OrderBy(c => c.ApplicationUser.UserName);
+                    break;
+                case "userName_desc":
+                    campaigns = campaigns.OrderByDescending(c => c.ApplicationUser.UserName);
                     break;
                 case "sellerEmail":
                     campaigns = campaigns.OrderBy(c => c.ApplicationUser.Email);
@@ -287,7 +285,10 @@ namespace BlueRibbonsReview.Controllers
                 case "sellerEmail_desc":
                     campaigns = campaigns.OrderByDescending(c => c.ApplicationUser.Email);
                     break;
-                 case "startDate":
+                case "openCampaign_desc":
+                    campaigns = campaigns.OrderByDescending(c => c.OpenCampaign);
+                    break;
+                case "startDate":
                     campaigns = campaigns.OrderBy(c => c.StartDate);
                     break;
                 case "startDate_desc":

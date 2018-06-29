@@ -29,7 +29,6 @@ namespace BlueRibbonsReview.Models
         public DateTime? ExpireDate { get; set; }
         public string VendorsPurchaseInstructions { get; set; }
         public string VendorsPurchaseURL { get; set; }
-        public string UserId { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }

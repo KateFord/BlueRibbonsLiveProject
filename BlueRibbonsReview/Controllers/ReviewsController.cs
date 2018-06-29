@@ -19,20 +19,49 @@ namespace BlueRibbonsReview.Controllers
         // GET: Reviews       
         public ActionResult Index(string sortOrder)
         {
-  
+
             ViewBag.Title = "Product Reviews";
 
             List<AnalyticsViewModel> campaignList = new List<AnalyticsViewModel>();
 
-            var allCampaigns = db.Campaigns;
+            // LINQ Query Syntax used over Method Syntax for simplicity and clarity; performance will be the same. 
+            var campaignsWithReviews = from campaigns in db.Campaigns
+                                       from reviews in db.Reviews
+                                       where campaigns.CampaignID == reviews.CampaignId
+                                       orderby campaigns.CampaignID
+                                       select campaigns;
 
             ViewBag.NameSortParm = "name";
             ViewBag.NameDescSortParm = "name_desc";
             ViewBag.RatingSortParm = "rating";
             ViewBag.RatingDescSortParm = "rating_desc";
 
+            switch (sortOrder)
+            {  //sort reviews based on "Sort by" dropdown selection
+                case "name":
+                    campaignsWithReviews = campaignsWithReviews.OrderBy(r => r.Name);
+                    break;
+                case "name_desc":
+                    campaignsWithReviews = campaignsWithReviews.OrderByDescending(r => r.Name);
+                    break;
+                case "rating":
+                    campaignsWithReviews = from campaigns in db.Campaigns
+                                           from reviews in db.Reviews
+                                           where campaigns.CampaignID == reviews.CampaignId
+                                           orderby reviews.ProductRating
+                                           select campaigns;
+                    break;
+                case "rating_desc":
+                    campaignsWithReviews = from campaigns in db.Campaigns
+                                           from reviews in db.Reviews
+                                           where campaigns.CampaignID == reviews.CampaignId
+                                           orderby reviews.ProductRating descending
+                                           select campaigns;
+                    break;
+            }
+
             // Creating new variable of List<Campaign>, containing only unique instances of campagins with reviews.
-            var uniqueCampaignsWithReviews = new HashSet<Campaign>(allCampaigns).ToList();
+            var uniqueCampaignsWithReviews = new HashSet<Campaign>(campaignsWithReviews).ToList();
             foreach (var campaign in uniqueCampaignsWithReviews)
             {
                 AnalyticsViewModel campaignModel = new AnalyticsViewModel(campaign);
@@ -55,7 +84,7 @@ namespace BlueRibbonsReview.Controllers
                 AnalyticsViewModel campaignModel = new AnalyticsViewModel(campaign);
                 campaignList.Add(campaignModel);
             }
-    
+
             ViewBag.Title = "Reviews of Your Products";
 
             return View("Index", campaignList);
