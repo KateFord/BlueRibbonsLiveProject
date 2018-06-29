@@ -30,13 +30,34 @@ namespace BlueRibbonsReview.Controllers
                                        where campaigns.CampaignID == reviews.CampaignId
                                        orderby campaigns.CampaignID
                                        select campaigns;
-                                       
-            // These are not being used to change the orderby clause ... see User story #1771
+
             ViewBag.NameSortParm = "name";
-+           ViewBag.NameDescSortParm = "name_desc";
-+           ViewBag.RatingSortParm = "rating";
-+           ViewBag.RatingDescSortParm = "rating_desc";
-              
+            ViewBag.NameDescSortParm = "name_desc";
+            ViewBag.RatingSortParm = "rating";
+            ViewBag.RatingDescSortParm = "rating_desc";
+
+            switch (sortOrder)
+            {  //sort reviews based on "Sort by" dropdown selection
+                case "name":
+                    campaignsWithReviews = campaignsWithReviews.OrderBy(r => r.Name);
+                    break;
+                case "name_desc":
+                    campaignsWithReviews = campaignsWithReviews.OrderByDescending(r => r.Name);
+                    break;
+                case "rating":
+                    campaignsWithReviews = from campaigns in db.Campaigns
+                                           from reviews in db.Reviews
+                                           where campaigns.CampaignID == reviews.CampaignId
+                                           orderby reviews.ProductRating
+                                           select campaigns;
+                    break;
+                case "rating_desc":
+                    campaignsWithReviews = from campaigns in db.Campaigns
+                                           from reviews in db.Reviews
+                                           where campaigns.CampaignID == reviews.CampaignId
+                                           orderby reviews.ProductRating descending
+                                           select campaigns;
+                    break;
             }
 
             // Creating new variable of List<Campaign>, containing only unique instances of campagins with reviews.
