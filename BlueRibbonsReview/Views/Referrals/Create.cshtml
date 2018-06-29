@@ -50,13 +50,9 @@
     </div>
 }
 
-
-
 <script>
-    $( document ).ready(function() {
-        $("#Message").keyup(characterCount);
-        $("#Message").keydown(characterCount);
-        $("#Message").on('input', characterCount);
+    $(document).ready(function () {
+        $("#Message").bind("keyup keydown input", { elementId: "#characterCount" }, setElementTextAttributeWithCharacterCount);
     });
 </script>
 
