@@ -40,8 +40,7 @@
                 </td>
                 @*FullName and Email:
                     Used to be able to create Campaigns (db table dbo.Campaign) without an associated Application user (db table dbo.AspNetUser)
-                    dbo.Campaign.ApplicationUser_Id is now being populated when campaigns are created and is to be used in place of
-                    dbo.Campaign.UserId.  *@
+                    Entity framework auto generated FK dbo.Campaign.ApplicationUser_Id is now being populated correctly when campaigns are created *@
                 <td>
                     @{
                         if (item.ApplicationUser != null)
