@@ -18,3 +18,4 @@ namespace BlueRibbonsReview.Migrations
             //Note: SqlScript needed to rollback update above. Spec unavailable so appended to User Story #1667
         }
     }
+ 
